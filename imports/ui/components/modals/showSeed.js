@@ -1,5 +1,8 @@
-import { getSeed } from '/imports/lib/ethereum/wallet.js';
+import { Promise } from 'bluebird';
+import * as Wallet from '/imports/lib/ethereum/wallet.js';
 import './showSeed.html';
+
+Promise.promisifyAll(Wallet);
 
 Template.showSeed.helpers({
   seed() {
@@ -24,12 +27,8 @@ Template.showSeed.events({
 
     const button = $('#btn-show-seed');
     button.button('loading');
-    getSeed(password, function () {
+    Wallet.getSeedAsync(password).then(function () {
       button.button('reset');
     });
   },
 });
-
-export function showSeed() {
-  Modal.show('showSeed', {});
-}

@@ -5,6 +5,8 @@
 /* eslint no-param-reassign: "off" */
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
 import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import KeyStore from 'eth-lightwallet/dist/lightwallet.js';
+import { Promise } from 'bluebird';
 import { Accounts } from 'meteor/accounts-base';
 import { add0x } from '/imports/lib/utils.js';
 import { getUserPTIAddress } from '/imports/api/users.js';
@@ -12,6 +14,8 @@ import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.
 import { abidefinition } from './abidefinition.js';
 import { paratiiContract } from './paratiiContract.js';
 
+Promise.promisifyAll(lightwallet.keystore);
+Promise.promisifyAll(KeyStore);
 
 // createKeystore will create a new keystore
 // save it in the sesion object and in local storage
@@ -29,16 +33,13 @@ function createKeystore(password, seedPhrase, cb) {
     password,
     seedPhrase,
   };
-  lightwallet.keystore.createVault(opts, function (err, keystore) {
-    if (err) {
-      throw err;
-    }
 
+  var keystore = null;
+  lightwallet.keystore.createVaultAsync(opts).then(function (ks) {
     // while we are at it, also generate an address for our user
-    keystore.keyFromPassword(password, function (error, pwDerivedKey) {
-      if (error) {
-        throw error;
-      }
+    keystore = ks;
+    return keystore.keyFromPasswordAsync(password);
+  }).then(function (pwDerivedKey) {
       // generate one new address/private key pairs
       // the corresponding private keys are also encrypted
       keystore.generateNewAddress(pwDerivedKey, 1);
@@ -50,11 +51,10 @@ function createKeystore(password, seedPhrase, cb) {
       Session.set('userPTIAddress', add0x(address));
       // TODO: we do not seem to be using this anymore...
       Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
-      Session.set('generating-keystore', false);
+      Session.set('generating-keystore', false);      
       if (cb) {
-        cb(error, seedPhrase);
+        cb(null, seedPhrase);
       }
-    });
   });
 }
 
