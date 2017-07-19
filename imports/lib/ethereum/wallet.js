@@ -55,6 +55,10 @@ function createKeystore(password, seedPhrase, cb) {
       if (cb) {
         cb(null, seedPhrase);
       }
+  }).catch(function(error){
+      if (cb) {
+        cb(error, null);
+      }
   });
 }
 

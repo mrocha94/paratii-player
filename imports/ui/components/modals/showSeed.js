@@ -32,3 +32,7 @@ Template.showSeed.events({
     });
   },
 });
+
+export function showSeed() {
+  Modal.show('showSeed', {});
+}
