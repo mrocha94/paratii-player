@@ -4,8 +4,6 @@
 /* eslint max-len: "off" */
 /* eslint no-param-reassign: "off" */
 import * as RLocalStorage from 'meteor/simply:reactive-local-storage';
-import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
-import KeyStore from 'eth-lightwallet/dist/lightwallet.js';
 import { Promise } from 'bluebird';
 import { Accounts } from 'meteor/accounts-base';
 import { add0x } from '/imports/lib/utils.js';
@@ -13,6 +11,8 @@ import { getUserPTIAddress } from '/imports/api/users.js';
 import { web3, GAS_PRICE, GAS_LIMIT, PARATII_TOKEN_ADDRESS } from './connection.js';
 import { abidefinition } from './abidefinition.js';
 import { paratiiContract } from './paratiiContract.js';
+import lightwallet from 'eth-lightwallet/dist/lightwallet.js';
+import KeyStore from 'eth-lightwallet/dist/lightwallet.js';
 
 Promise.promisifyAll(lightwallet.keystore);
 Promise.promisifyAll(KeyStore);
@@ -22,6 +22,7 @@ Promise.promisifyAll(KeyStore);
 // generate an address, and save that in the sesssion too
 function createKeystore(password, seedPhrase, cb) {
   // create a new seedPhrase if we have none
+  let keystore = null;
   Session.set('generating-keystore', true);
   if (seedPhrase == null) {
     seedPhrase = lightwallet.keystore.generateRandomSeed();
@@ -34,31 +35,30 @@ function createKeystore(password, seedPhrase, cb) {
     seedPhrase,
   };
 
-  var keystore = null;
   lightwallet.keystore.createVaultAsync(opts).then(function (ks) {
     // while we are at it, also generate an address for our user
     keystore = ks;
     return keystore.keyFromPasswordAsync(password);
   }).then(function (pwDerivedKey) {
-      // generate one new address/private key pairs
-      // the corresponding private keys are also encrypted
-      keystore.generateNewAddress(pwDerivedKey, 1);
+    // generate one new address/private key pairs
+    // the corresponding private keys are also encrypted
+    keystore.generateNewAddress(pwDerivedKey, 1);
 
-      RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
-      Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
+    RLocalStorage.setItem(`keystore-${Accounts.userId()}`, keystore.serialize());
+    Session.set(`keystore-${Accounts.userId()}`, keystore.serialize());
 
-      const address = keystore.getAddresses()[0];
-      Session.set('userPTIAddress', add0x(address));
-      // TODO: we do not seem to be using this anymore...
-      Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
-      Session.set('generating-keystore', false);      
-      if (cb) {
-        cb(null, seedPhrase);
-      }
-  }).catch(function(error){
-      if (cb) {
-        cb(error, null);
-      }
+    const address = keystore.getAddresses()[0];
+    Session.set('userPTIAddress', add0x(address));
+    // TODO: we do not seem to be using this anymore...
+    Meteor.call('users.update', { 'profile.ptiAddress': add0x(address) });
+    Session.set('generating-keystore', false);
+    if (cb) {
+      cb(null, seedPhrase);
+    }
+  }).catch(function (error) {
+    if (cb) {
+      cb(error, null);
+    }
   });
 }
 
