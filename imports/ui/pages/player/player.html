@@ -10,22 +10,22 @@
         <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
       </div>
       <br />
-      <button id="play-pause-button" title="{{playPause}}">
-        <img src= "{{playPauseIcon}}">
+      <button id="play-pause-button" class="player-button-play" title="{{playPause}}">
+        <img class="button-icon" src= "{{playPauseIcon}}">
       </button>
       <button id="volume-button" title="volume">
-        <img src={{ volumeIcon }} />
+        <img class="button-icon" src={{ volumeIcon }} />
       </button>
       <div id="vol-control" class="{{ volumeClass }}">
         <div id="volume-value" style="width: {{ volumeValue }}%"></div>
         <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
       </div>
-      <span id="current-time">{{formatTime currentTime}}</span>
-      <span class="slash">/</span>
-      <span id="total-time">{{formatTime totalTime}}</span>
+      <span id="current-time" class="video-time-current">{{formatTime currentTime}}</span>
+      <span class="slash video-time-slash">/</span>
+      <span id="total-time" class="video-time-total">{{formatTime totalTime}}</span>
       {{ #if status }}<span id="status"><tt>STATUS: {{ status }}</tt></span>{{/if}}
-      <button id="fullscreen-button" title="{{fullscreen}}">
-        <img src= "/img/fullscreen-icon.svg">
+      <button id="fullscreen-button" class="player-button-fullscreen" title="{{fullscreen}}">
+        <img class="button-icon" src= "/img/fullscreen-icon.svg">
       </button>
     </div>
     {{/unless }}
