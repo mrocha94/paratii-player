@@ -1,0 +1,62 @@
+// Player Info
+
+.player-info {
+  margin-left: 20px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: inherit;
+
+  .query-tiny({
+    margin: 0;
+    top: 0;
+    transform: translateY(0);
+  });
+}
+
+
+//
+
+.player-title {
+  color: white;
+  font-family:'Roboto';
+  font-weight: 100;
+  font-size: 30px;
+  margin-top: 10px;
+
+  .query-tiny({
+    font-size: 20px;
+    font-weight: 500;
+    margin: 16px 45px 0 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  });
+}
+
+
+//
+
+.video-time {
+  &-current {
+    color: #fff;
+    margin-left: 10px;
+  }
+
+  &-slash,
+  &-total {
+    color: #aaa;
+  }
+
+  &-total {
+    .query-tiny({
+      bottom: 20px;
+      position: absolute;
+      right: 20px;
+    });
+
+    .pause & {
+      opacity: 0;
+    }
+  }
+}
