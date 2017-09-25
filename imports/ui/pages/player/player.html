@@ -1,6 +1,52 @@
 <template name="player">
   <div id="player-container">
-    <video id="video-player" {{canAutoplay}}>
+
+    <div class="player-modal">
+      <div class="player-modal-container">
+        <button id="fullscreen-button" class="player-modal-button-fullscreen" title="{{fullscreen}}">
+          <svg class="player-modal-button-fullscreen-svg" viewBox="0 0 14 14">
+            <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
+          </svg>
+        </button>
+        <!-- #login -->
+        <!-- <div class="player-modal-content">
+          <input class="player-modal-input email" type="email" placeholder="email" />
+          <input class="player-modal-input password" type="password" placeholder="password" />
+          <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#">Forgot password?</a></p>
+          <div class="player-modal-footer">
+            <button class="player-modal-footer-button player-modal-footer-button-cancel">Cancel</button>
+            <button class="player-modal-footer-button player-modal-footer-button-confim">Sign in</button>
+            <button class="player-modal-footer-button player-modal-footer-button-confim">Sign up</button>
+          </div>
+        </div> -->
+        <!-- /login -->
+        <!-- #logged-01 -->
+        <!-- <div class="player-modal-content">
+          <h3 class="player-modal-title">Around the Block - Chapter 6</h3>
+          <p class="player-modal-text">You are going to transfer <strong>10 US$</strong> <span class="player-modal-pti">20 pti</span> to Around the Block for the video <strong>Around the Block - Chapter 6</strong>.</p>
+          <div class="player-modal-footer">
+            <button class="player-modal-footer-button player-modal-footer-button-cancel">Cancel</button>
+            <button class="player-modal-footer-button player-modal-footer-button-confim">Continue</button>
+          </div>
+        </div> -->
+        <!-- /logged-01 -->
+        <!-- #logged-02 -->
+        <div class="player-modal-content">
+          <h3 class="player-modal-title">Around the Block - Chapter 6</h3>
+          <p class="player-modal-text"><strong>10 US$</strong> <span class="player-modal-pti">20 pti</span></p>
+          <input class="player-modal-input password" type="password" placeholder="password" />
+          <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#">Forgot password?</a></p>
+          <div class="player-modal-footer">
+            <button class="player-modal-footer-button player-modal-footer-button-cancel">Cancel</button>
+            <button class="player-modal-footer-button player-modal-footer-button-confim">Continue</button>
+          </div>
+        </div>
+        <!-- /logged-02 -->
+      </div>
+    </div>
+
+    <!-- <video id="video-player" {{canAutoplay}}> -->
+    <video id="video-player">
     </video>
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">

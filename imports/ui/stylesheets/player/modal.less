@@ -1,0 +1,148 @@
+// Player Modal
+
+.player-modal {
+  display: none;
+  font-weight: 400;
+  position: absolute;
+  z-index: @zindex-player-modal;
+
+  .query-tiny({
+    height: 100%;
+    display: block;
+    width: 100%;
+  });
+
+
+  &-container {
+    background-color: #f1f2f1;
+    color: @color-grey;
+
+    .query-tiny({
+      height: 100%;
+      width: 100%;
+    });
+  }
+
+
+  &-button-fullscreen {
+    margin: 0;
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    width: 20px;
+
+    &-svg {
+      &:extend(.full-block all);
+
+      fill: @color-grey-light;
+    }
+  }
+
+  &-container {
+    height: 100%;
+    width: 100%;
+
+    .query-tiny({
+      padding: 20px 15px 10px 20px;
+      position: relative;
+    });
+  }
+
+  &-title {
+    color: @color-grey;
+
+    .query-tiny({
+      font-size: 20px;
+      font-weight: 500;
+      overflow: hidden;
+      margin: 0 30px 15px 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    });
+  }
+
+  &-text {
+    margin: 0;
+
+    strong {
+      color: @color-purple;
+      font-weight: 500;
+    }
+
+    &-small {
+      margin: 0;
+    }
+  }
+
+  &-pti {
+    background-color: @color-purple;
+    border-radius: 3px;
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    text-transform: uppercase;
+    vertical-align: text-top;
+  }
+
+  &-input {
+    background: 0;
+    border-bottom: 2px solid @color-grey-light;
+    display: block;
+    height: 35px;
+    padding: 0 33px 0 0;
+    width: 100%;
+
+    &,
+    &::placeholder {
+      color: @color-grey-light;
+      font-weight: 500;
+    }
+
+    &.password {
+      margin: 10px 0 0;
+    }
+  }
+
+  &-link {
+    &-forgot {
+      color: @color-grey-light;
+      display: block;
+      margin-top: 10px;
+      text-transform: lowercase;
+
+      &:hover {
+        color: @color-grey-light;
+        opacity: .8;
+      }
+    }
+  }
+
+  &-footer {
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    left: 0;
+    padding: 0 20px 20px;
+    position: absolute;
+    width: 100%;
+
+    &-button {
+      font-weight: 500;
+      margin: 0 0 0 20px;
+      text-transform: uppercase;
+      transition: opacity .25s;
+
+      &:hover {
+        opacity: .8;
+      }
+
+      &-confim {
+        color: @color-purple;
+      }
+
+      &-cancel {
+        color: @color-grey-light;
+      }
+    }
+  }
+}
