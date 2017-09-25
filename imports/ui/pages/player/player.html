@@ -56,8 +56,13 @@
         <div class="player-description">{{ description }}</div>
 
         {{#if isLocked }}
-          <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button>
+          <!-- <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button> -->
+
+
         {{/if}}
+        <div id="slide-to-pay">
+          <div class="cursor"></div>
+        </div>
       </div>
     </div>
     {{/with}}

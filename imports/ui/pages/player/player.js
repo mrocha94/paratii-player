@@ -235,7 +235,20 @@ const setLoadedProgress = (instance) => {
   }
 }
 
+let curX
 Template.player.events({
+  'touchmove #slide-to-pay .cursor' (event) {
+    event.preventDefault()
+    const el = event.target
+    const viewportOffset = el.getBoundingClientRect()
+    const touch = event.originalEvent.touches[0]
+
+    curX = touch.pageX - viewportOffset.left
+    console.log(curX)
+    console.log(viewportOffset.left)
+    console.log(touch)
+    el.style.webkitTransform = 'translateX(' + curX + 'px)'
+  },
   'click #unlock-video' (event) {
     Modal.show('doTransaction', {
       type: 'PTI',
