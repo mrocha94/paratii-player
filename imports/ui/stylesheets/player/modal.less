@@ -8,7 +8,7 @@
 
   .query-tiny({
     height: 100%;
-    display: none;
+    display: block;
     width: 100%;
   });
 
@@ -32,6 +32,12 @@
 
     color: @color-grey;
   }
+
+  &-log {
+
+  }
+
+
 
   &-text {
     margin: 0;
@@ -64,8 +70,18 @@
     padding: 0 33px 0 0;
     width: 100%;
 
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill {
+      color: @color-grey-light;
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+    }
+
     &,
-    &::placeholder {
+    &::placeholder,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill {
       color: @color-grey-light;
       font-weight: 500;
     }
