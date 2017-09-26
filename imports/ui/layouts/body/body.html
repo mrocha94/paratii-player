@@ -1,11 +1,8 @@
 
 <template name="App_body">
-  <div style="width: 100%; height: 100%; position: absolute; overflow-y: hidden;">
-    <div class="nav-overlay {{light}}"></div>
-    {{> navigation }}
-    <div id="app-container" class="main-app" role="main">
+  <div class="main-container">
+    <main id="app-container" class="main-app" role="main">
       {{> Template.dynamic template=main}}
-    </div>
+    </main>
   </div>
-
 </template>
