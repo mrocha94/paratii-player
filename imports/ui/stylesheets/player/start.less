@@ -17,9 +17,10 @@
   }
 
   &-button-fullscreen {
+    &:extend(.hover-opacity all);
     &:extend(.player-tiny-button-fullscreen all);
 
-    z-index: 6;
+    z-index: 7;
 
     svg {
       fill: white;
@@ -34,30 +35,46 @@
     z-index: 3;
   }
 
+  &-price,
+  &-time {
+    bottom: 20px;
+    position: absolute;
+    user-select: none;
+  }
+
   &-price {
     &:extend(.player-text-tip all);
     &:extend(.player-text-tip all);
     &:extend(.player-text-tip-normal all);
 
-    bottom: 20px;
-    position: absolute;
     left: 20px;
+    z-index: 4;
   }
 
   &-time {
-    bottom: 20px;
     color: white;
-    position: absolute;
     right: 20px;
+    z-index: 5;
   }
 
   &-button-play {
     &:extend(.pos-a-full all);
 
-    z-index: 2;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background .4s;
+    z-index: 6;
 
-    svg {
+    &:hover {
+      background-color: rgba(0, 0, 0, .5);
+    }
+
+    &-svg {
+      transition: transform .5s @ease-smooth;
       width: 35px;
+
+      .player-start-button-play:hover & {
+        transform: scale(1.1);
+      }
     }
   }
 }
