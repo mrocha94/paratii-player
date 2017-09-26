@@ -272,7 +272,7 @@ Template.player.events({
       }, 3000)
     }
   },
-  'click #fullscreen-button' (event, instance) {
+  'click #fullscreen-button, click #player-start-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
     const videoPlayer = instance.find('#player-container')
     if (fullscreenOn) {
       requestCancelFullscreen(document)
