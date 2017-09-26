@@ -1,0 +1,63 @@
+// Start window
+
+.player-start {
+  &:extend(.pos-a-full all);
+
+  background: no-repeat 50% 50%; 
+  background-size: cover;
+  display: none;
+  z-index: @zindex-player-start;
+
+  .query-tiny({
+    display: block;
+  });
+
+  &-wrapper {
+    &:extend(.player-tiny-modal-container all);
+  }
+
+  &-button-fullscreen {
+    &:extend(.player-tiny-button-fullscreen all);
+
+    z-index: 6;
+
+    svg {
+      fill: white;
+    }
+  }
+
+  &-title {
+    &:extend(.player-tiny-title all);
+
+    color: white;
+    position: relative;
+    z-index: 3;
+  }
+
+  &-price {
+    &:extend(.player-text-tip all);
+    &:extend(.player-text-tip all);
+    &:extend(.player-text-tip-normal all);
+
+    bottom: 20px;
+    position: absolute;
+    left: 20px;
+  }
+
+  &-time {
+    bottom: 20px;
+    color: white;
+    position: absolute;
+    right: 20px;
+  }
+
+  &-button-play {
+    &:extend(.pos-a-full all);
+
+    z-index: 2;
+
+    svg {
+      width: 35px;
+    }
+  }
+}

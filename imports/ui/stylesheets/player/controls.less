@@ -1,58 +1,12 @@
 // Player Controls
 
-// Buttons
-
-.player-button {
-
-  // Play
-  
-  &-play {
-    color: white;
-    background-color: transparent;
-    border: 0;
-    position: relative;
-    float: left;
-    margin: 0 10px;
-    transition: 0.5s;
-
-    .query-tiny({
-      height: 50px;
-      left: 50%;
-      margin: 0;
-      position: absolute;
-      top: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      width: 41px;
-    });
-
-    .pause & {
-      opacity: 0;
-    }
-  }
-
-  // Fullscreen
-
-  &-fullscreen {
-    background-color: transparent;
-    border: 0;
-    float: right;
-    margin: 2px 15px 0 0;
-
-    .pause & {
-      opacity: 0;
-    }
-  }
-}
 
 .player-controls {
-  width: 100%;
-  padding: 10px 20px 20px 80px;
-  z-index: @zindex-player-controls;
   position: absolute;
   left: 0;
-  box-sizing: border-box;
   bottom: 0px;
-  transition: 0.5s;
+  width: 100%;
+  z-index: @zindex-player-controls;
 
   .query-tiny({
     height: 100%;
@@ -226,6 +180,45 @@
         background: @color-purple;
         width: 15px;
         height: 15px;
+    }
+  }
+}
+// Buttons
+
+.player-button {
+
+  // Play
+  
+  &-play {
+    color: white;
+    background-color: transparent;
+    border: 0;
+    position: relative;
+    float: left;
+    margin: 0 10px;
+    transition: 0.5s;
+
+    .query-tiny({
+      height: 50px;
+      left: 50%;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      width: 41px;
+    });
+
+    .pause & {
+      opacity: 0;
+    }
+  }
+
+  // Fullscreen
+
+  &-fullscreen {
+
+    .pause & {
+      opacity: 0;
     }
   }
 }

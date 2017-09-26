@@ -8,57 +8,29 @@
 
   .query-tiny({
     height: 100%;
-    display: block;
+    display: none;
     width: 100%;
   });
 
+  &-wrapper {
+    &:extend(.player-tiny-modal-container all);
 
-  &-container {
-    background-color: #f1f2f1;
+    background-color: white;
     color: @color-grey;
-
-    .query-tiny({
-      height: 100%;
-      width: 100%;
-    });
   }
 
-
   &-button-fullscreen {
-    margin: 0;
-    position: absolute;
-    right: 15px;
-    top: 20px;
-    width: 20px;
+    &:extend(.player-tiny-button-fullscreen all);
 
-    &-svg {
-      &:extend(.full-block all);
-
+    svg {
       fill: @color-grey-light;
     }
   }
 
-  &-container {
-    height: 100%;
-    width: 100%;
-
-    .query-tiny({
-      padding: 20px 15px 10px 20px;
-      position: relative;
-    });
-  }
-
   &-title {
-    color: @color-grey;
+    &:extend(.player-tiny-title all);
 
-    .query-tiny({
-      font-size: 20px;
-      font-weight: 500;
-      overflow: hidden;
-      margin: 0 30px 15px 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    });
+    color: @color-grey;
   }
 
   &-text {

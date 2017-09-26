@@ -1,0 +1,82 @@
+// Extends/Classes
+
+// 
+
+.player-tiny-modal-container {
+  .query-tiny({
+    height: 100%;
+    padding: 15px 20px 10px 20px;
+    position: relative;
+    width: 100%;
+  });
+}
+
+.player-tiny-button-fullscreen {
+  .query-tiny({
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 20px;
+  });
+
+  svg {
+    &:extend(.full-block all);
+  }
+}
+
+
+// Text
+
+.player-text-tip {
+  background-color: @color-purple;
+  border-radius: 3px;
+  color: white;
+  text-transform: uppercase;
+  vertical-align: text-top;
+}
+
+.player-text-tip-normal {
+  font-size: 14px;
+  padding: 6px 8px;
+}
+
+.player-text-tip-small {
+  font-size: 10px;
+  padding: 3px 4px;
+}
+
+.player-tiny-title {
+  .query-tiny({
+    font-size: 20px;
+    font-weight: 700;
+    overflow: hidden;
+    margin-right: 25px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  });
+}
+
+
+//
+
+.full-block {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.full-mh {
+  height: 100%;
+  width: 100%;
+}
+
+
+//
+
+.pos-a-full {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
