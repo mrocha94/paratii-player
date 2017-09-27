@@ -3,29 +3,120 @@
 .player-modal {
   display: none;
   font-weight: 400;
+  pointer-events: none;
   position: absolute;
   z-index: @zindex-player-modal;
 
   .query-tiny({
-    height: 100%;
     display: block;
+    height: 100%;
     width: 100%;
   });
+
+  .log-screen &,
+  .buy-screen &,
+  .confirm-screen & {
+    .query-tiny({
+      pointer-events: initial;
+    });
+  }
 
   &-wrapper {
     &:extend(.player-tiny-modal-container all);
 
     background-color: white;
     color: @color-grey;
+    transition: transform .5s @ease-smooth;
+
+    .query-tiny({
+      transform: translate3d(0, 100%, 0);
+    });
+
+    .log-screen &,
+    .buy-screen &,
+    .confirm-screen & {
+      .query-tiny({
+        transition: transform .65s @ease-smooth;
+        transform: translate3d(0, 0, 0);
+      });
+    }
   }
+
+  // Screens
+
+  &-content {  
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s, height 0s linear .4s;
+    z-index: 2;
+
+    .query-tiny({
+      height: 0;
+      transform: translate3d(-100%, -100%, 0);
+    });
+
+    &--log {
+      .log-screen & {
+        .query-tiny({
+          height: 100%;
+          opacity: 1;
+          padding-top: 16px;
+          pointer-events: initial;
+          transform: translate3d(0, 0, 0);
+          transition: opacity .25s linear .55s, height 0s;
+        });
+      }
+    }
+
+    &--buy {
+      .buy-screen & {
+        .query-tiny({
+          height: 100%;
+          opacity: 1;
+          pointer-events: initial;
+          transform: translate3d(0, 0, 0);
+          transition: opacity .25s linear .55s, height 0s;
+        });
+      }
+    }
+
+    &--confirm {
+      .confirm-screen & {
+        .query-tiny({
+          height: 100%;
+          opacity: 1;
+          pointer-events: initial;
+          transform: translate3d(0, 0, 0);
+          transition: opacity .25s linear .55s, height 0s;
+        });
+      }
+    }
+  }
+
+  //
 
   &-button-fullscreen {
     &:extend(.player-tiny-button-fullscreen all);
 
+    opacity: 0;
+    transition: opacity .3s;
+    z-index: 3;
+
     svg {
       fill: @color-grey-light;
     }
+
+    .log-screen &,
+    .buy-screen &,
+    .confirm-screen & {
+      .query-tiny({
+        opacity: 1;
+        transition: opacity .3s linear .7s;
+      });
+    }
   }
+
+  //
 
   &-title {
     &:extend(.player-tiny-title all);
@@ -33,14 +124,17 @@
     color: @color-grey;
   }
 
-  &-log {
-
-  }
-
-
 
   &-text {
     margin: 0;
+
+    .player-modal-content--buy & {
+      margin-top: 5vw;
+    }
+
+    .player-modal-content--confirm & {
+      margin: 3vw 0 1.5vw;
+    }
 
     strong {
       color: @color-purple;
@@ -53,13 +147,8 @@
   }
 
   &-pti {
-    background-color: @color-purple;
-    border-radius: 3px;
-    color: white;
-    font-size: 10px;
-    padding: 2px 5px;
-    text-transform: uppercase;
-    vertical-align: text-top;
+    &:extend(.player-text-tip all);
+    &:extend(.player-text-tip-small all);
   }
 
   &-input {
@@ -68,12 +157,21 @@
     display: block;
     height: 35px;
     padding: 0 33px 0 0;
+    transition: border-color .3s;
     width: 100%;
+
+    &.error {
+      animation: shakeAnim .5s @ease-smooth;
+      border-color: @color-red;
+    }
+
+    &.success {
+      border-color: @color-green;
+    }
 
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
     &:-webkit-autofill {
-      color: @color-grey-light;
       -webkit-box-shadow: 0 0 0px 1000px white inset;
     }
 
@@ -93,14 +191,15 @@
 
   &-link {
     &-forgot {
+      &:extend(.hover-opacity all);
+
       color: @color-grey-light;
-      display: block;
-      margin-top: 10px;
+      display: inline-block;
+      margin-top: 8px;
       text-transform: lowercase;
 
       &:hover {
         color: @color-grey-light;
-        opacity: .8;
       }
     }
   }
@@ -110,26 +209,58 @@
     display: flex;
     justify-content: flex-end;
     left: 0;
-    padding: 0 20px 20px;
+    padding: 0 0 20px;
     position: absolute;
     width: 100%;
 
     &-button {
+      &:extend(.hover-opacity all);
+
       font-weight: 500;
       margin: 0 0 0 20px;
       text-transform: uppercase;
       transition: opacity .25s;
 
-      &:hover {
-        opacity: .8;
-      }
-
-      &-confim {
+      &--signin,
+      &--signup,
+      &--continue,
+      &--confirm,
+      &--approved {
         color: @color-purple;
       }
 
-      &-cancel {
+      &--cancel {
         color: @color-grey-light;
+      }
+
+      &--cancel,
+      &--confirm {
+        .confirm-sending & {
+          display: none;
+        }
+
+        .confirm-success & {
+          display: none;
+        }
+      }
+
+      &--approved {
+        display: none;
+
+        .confirm-success & {
+          display: block;
+        }
+      }
+    }
+
+    &-loading {
+      display: none;
+      font-weight: 500;
+      text-transform: uppercase;
+
+      .confirm-sending & {
+        animation: blink .5s linear infinite;
+        display: block;
       }
     }
   }
