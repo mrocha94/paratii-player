@@ -4,6 +4,7 @@
 @zindex-player-controls-time: 5;
 @zindex-player-controls-button-play: 10;
 @zindex-player-controls-button-fullscreen: 15;
+@zindex-player-controls-button-progress: 20;
 
 //
 
@@ -19,14 +20,95 @@
     padding: 0;
   });
 
+  &-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    height: 5px;
+    margin: 10px auto 30px;
+    position: relative;
+    width: 100%;
+    z-index: @zindex-player-controls-button-progress;
+
+    .query-tiny({
+      bottom: 15px;
+      left: 20px;
+      margin: 0;
+      position: absolute;
+      width: 74%;
+    });
+
+    .blocked & {
+      display: none;
+    }
+    
+
+    &-played {
+      background: rgba(255, 255, 255, 0.8);
+      height: 5px;
+      width: 100%;
+      margin: -5px 0;
+      border-radius: 10px;
+      transform-origin: 0 0;
+      -webkit-transform-origin: 0 0;
+    }
+
+    &-loaded {
+      background: rgba(255, 255, 255, 0.5);
+      height: 5px;
+      width: 100%;
+      border-radius: 10px;
+      transform-origin: 0 0;
+      -webkit-transform-origin: 0 0;
+    }
+
+    &-scrubber {
+      background: rgba(0,0,0,0);
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      top: 3px;
+      left: 0;
+      margin: -8px 0 0 -8px;
+
+      -webkit-transform: translateZ(0);
+      -moz-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      -o-transform: translateZ(0);
+      transform: translateZ(0);
+
+      &:before,
+      &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          border-radius: 50%;
+      }
+
+      &:before {
+          background: white;
+          width: 15px;
+          height: 15px;
+      }
+    }
+  }
+
   &-time {
     &-total {    
-      bottom: 20px;
       color: white;
       position: absolute;
-      right: 20px;
       user-select: none;
       z-index: @zindex-player-controls-time;
+
+      .query-tiny({
+        bottom: 9px;
+        right: 20px;
+      });
+
+      .blocked & {
+        .query-tiny({
+          bottom: 20px;
+        });
+      }
     }
   }
 
@@ -93,64 +175,6 @@
   //   // box-shadow: -9999px 0 0 9999px #FFF;
   // }
 
-  // #video-progress {
-  //   background: rgba(255, 255, 255, 0.2);
-  //   position: relative;
-  //   width: 100%;
-  //   height: 5px;
-  //   margin: 10px auto 30px;
-  //   border-radius: 10px;
-  // }
-
-  // #played-bar {
-  //   background: @color-purple;
-  //   height: 5px;
-  //   width: 100%;
-  //   margin: -5px 0;
-  //   border-radius: 10px;
-  //   transform-origin: 0 0;
-  //   -webkit-transform-origin: 0 0;
-  // }
-
-  // #loaded-bar {
-  //   background: rgba(255, 255, 255, 0.5);
-  //   height: 5px;
-  //   width: 100%;
-  //   border-radius: 10px;
-  //   transform-origin: 0 0;
-  //   -webkit-transform-origin: 0 0;
-  // }
-
-  // #scrubber {
-  //   background: rgba(0,0,0,0);
-  //   width: 15px;
-  //   height: 15px;
-  //   position: absolute;
-  //   top: 3px;
-  //   left: 0;
-  //   margin: -8px 0 0 -8px;
-
-  //   -webkit-transform: translateZ(0);
-  //   -moz-transform: translateZ(0);
-  //   -ms-transform: translateZ(0);
-  //   -o-transform: translateZ(0);
-  //   transform: translateZ(0);
-
-  //   &:before,
-  //   &:after {
-  //       content: '';
-  //       display: block;
-  //       position: absolute;
-  //       border-radius: 50%;
-  //   }
-
-  //   &:before {
-  //       background: @color-purple;
-  //       width: 15px;
-  //       height: 15px;
-  //   }
-  // }
-
   // #vol-control {
   //   background: rgba(255, 255, 255, 0.7);
   //   position: relative;
@@ -210,31 +234,10 @@
     background-color: transparent;
 
     .query-tiny({
-      .pos-a-full;  
+      .pos-a-center;
 
-      margin: 0;
       z-index: @zindex-player-controls-button-play;
     });
-
-    &:hover {
-      .blocked & {
-        .query-tiny({
-          background-color: rgba(0, 0, 0, .6);
-          transition: background .25s linear .1s;
-        });
-      }
-    }
-
-    .blocked & {
-      .query-tiny({
-        background-color: rgba(0, 0, 0, 0);
-        transition: background .4s;
-      });
-    }
-
-    .pause & {
-      opacity: 0;
-    }
 
     &-svg {
       transition: transform .35s @ease-smooth;
@@ -254,10 +257,6 @@
     .query-tiny({
       z-index: @zindex-player-controls-button-fullscreen;
     });
-
-    .pause & {
-      opacity: 0;
-    }
 
     svg {
       fill: white;
