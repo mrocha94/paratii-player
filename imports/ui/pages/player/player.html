@@ -20,7 +20,7 @@
     </div>
     <!-- #player cover -->
 
-    <!-- #Modal buy -->
+    <!-- #modal buy -->
     <div class="player-modal">
       <div class="player-modal-wrapper">
         <button id="player-modal-button-fullscreen" class="player-modal-button-fullscreen" title="{{fullscreen}}">
@@ -32,7 +32,7 @@
         <!-- #login -->
         <form class="player-modal-content player-modal-content--log" action="">
           <input class="player-modal-input email" autocomplete="off" type="email" placeholder="email" required />
-          <input class="player-modal-input password" autocomplete="off" type="password" placeholder="password" required />
+          <input class="player-modal-input password" autocomplete="off" type="password" placeholder="password" />
           <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
           <div class="player-modal-footer">
             <button class="player-modal-footer-button player-modal-footer-button--cancel" type="button">Cancel</button>
@@ -55,7 +55,7 @@
         <form class="player-modal-content player-modal-content--confirm" action="">
           <p class="player-modal-title">Around the Block - Chapter 6</p>
           <p class="player-modal-text"><strong>10 US$</strong> <span class="player-modal-pti">20 pti</span></p>
-          <input class="player-modal-input confirm-password" autocomplete="off" type="password" placeholder="password" required />
+          <input class="player-modal-input confirm-password" autocomplete="off" type="password" placeholder="password" />
           <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
           <div class="player-modal-footer">
             <button class="player-modal-footer-button player-modal-footer-button--cancel" type="button">Cancel</button>
@@ -68,6 +68,61 @@
 
       </div>
     </div>
-    <!-- /Modal buy -->
+    <!-- /modal buy -->
+
+    <!-- <video id="video-player" class="player-video" {{canAutoplay}}> -->
+    <video id="video-player" class="player-video">
+    </video>
+    {{#unless isLocked }}
+    <div class="player-controls {{playPause}} {{hideControls}}">
+
+      <div id="video-progress">
+        <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
+        <div id="played-bar" style="width: {{playedProgress}}%"></div>
+        <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
+      </div>
+      <br />
+      <button id="play-pause-button" class="player-button-play" title="{{playPause}}">
+        <img class="button-icon" src= "{{playPauseIcon}}">
+      </button>
+      <!-- <button id="volume-button" title="volume">
+        <img class="button-icon" src={{ volumeIcon }} />
+      </button>
+      <div id="vol-control" class="{{ volumeClass }}">
+        <div id="volume-value" style="width: {{ volumeValue }}%"></div>
+        <div id="vol-scrubber" style="left: {{volScrubberTranslate}}%"></div>
+      </div> -->
+      <!-- <span id="current-time" class="video-time-current">{{formatTime currentTime}}</span>
+      <span class="slash video-time-slash">/</span> -->
+      <span id="total-time" class="video-time-total">{{formatTime totalTime}}</span>
+      {{ #if status }}<!-- <span id="status"><tt>STATUS: {{ status }}</tt></span> -->{{/if}}
+      
+      <button id="fullscreen-button" class="player-button-fullscreen" title="{{fullscreen}}">
+          <svg class="player-button-fullscreen-svg" viewBox="0 0 14 14">
+            <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
+          </svg>
+      </button>
+    </div>
+    {{/unless }}
+
+    {{#with video}}
+    <div class="player-info {{playPause}}">
+      <h2 class="player-title player-modal-title">{{ title }}</h2>
+      {{#each tag in tags }}
+        <!-- <div class="primary-tag">{{ tag }}</div> -->
+      {{/each}}
+      <!-- <div class="player-uploader">{{ uploader.name }} <img class="dapp-identicon" src="{{ uploader.avatar }}"/></div> -->
+        
+<!--         <div class="player-description">{{ description }}</div>
+        <div class="player-statistics">
+          <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
+          <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
+          <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
+        </div> -->
+        {{#if isLocked }}
+          <!-- <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button> -->
+        {{/if}}
+    </div>
+    {{/with}}
   </div>
 </template>
