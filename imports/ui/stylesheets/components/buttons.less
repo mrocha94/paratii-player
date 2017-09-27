@@ -6,10 +6,26 @@
   }
 }
 
-.hover-opacity {
-  transition: opacity .3s;
+// Tiny Flow
+
+.player-tiny-button-fullscreen {
+
+  .query-tiny({
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 20px;
+  });
+
+  svg {
+    transition: transform .5s @ease-smooth;
+  }
 
   &:hover {
-    opacity: .5;
+    svg {
+      .query-tiny({
+        transform: scale(.9);
+      });
+    }
   }
 }
