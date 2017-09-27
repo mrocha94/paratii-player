@@ -272,7 +272,7 @@ Template.player.events({
       }, 3000)
     }
   },
-  'click #fullscreen-button, click #player-start-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
+  'click #fullscreen-button' (event, instance) {
     const videoPlayer = instance.find('#player-container')
     if (fullscreenOn) {
       requestCancelFullscreen(document)
@@ -380,5 +380,103 @@ Template.player.events({
   'click #button-dislike' () {
     const videoId = _video._id
     Meteor.call('videos.dislike', videoId)
+  },
+  // #front-end tests
+  'click #player-cover-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
+    const videoPlayer = instance.find('#player-container')
+    if (fullscreenOn) {
+      requestCancelFullscreen(document)
+      fullscreenOn = false
+    } else {
+      requestFullscreen(videoPlayer)
+      fullscreenOn = true
+    }
+  },
+  'click .player-modal-footer-button--cancel' (event, instance) { //
+    var $parent
+
+    $parent = $(instance.find('div.player-container'))
+    $parent
+      .removeClass('log-screen buy-screen confirm-screen')
+      .addClass('cover-screen')
+  },
+  'click #player-cover-button-play' (event, instance) { //
+    var $parent
+    $parent = $(instance.find('div.player-container'))
+    $parent.addClass('log-screen')
+  },
+  'submit .player-modal-content--log' (event, instance) {
+    event.preventDefault()
+
+    var $parent, $form, $email, $password, validate
+
+    $parent = $(instance.find('div.player-container'))
+    $form = $('.player-modal-content--log')
+    $email = $form.find('.email')
+    $password = $form.find('.password')
+    validate = true
+
+    $email.removeClass('error sucess')
+    $password.removeClass('error sucess')
+
+    if ($email.val().length < 5) {
+      $email.removeClass('success error').addClass('error')
+      validate = false
+    }
+
+    if ($password.val().length < 5) {
+      $password.removeClass('success error').addClass('error')
+      validate = false
+    }
+
+    if (validate) {
+      $parent
+        .removeClass('log-screen')
+        .addClass('buy-screen')
+    }
+  },
+  'click .player-modal-footer-button--continue' (event, instance) { //
+    var $parent
+
+    $parent = $(instance.find('div.player-container'))
+    $parent
+      .removeClass('log-screen buy-screen')
+      .addClass('confirm-screen')
+  },
+  'submit .player-modal-content--confirm' (event, instance) {
+    event.preventDefault()
+
+    var $form, $password, validate
+
+    $form = $('.player-modal-content--confirm')
+    $password = $form.find('.confirm-password')
+    validate = true
+
+    $form.removeClass('confirm-sending confirm-success')
+    $password.removeClass('error sucess')
+
+    if ($password.val().length < 5) {
+      $password.removeClass('success error').addClass('error')
+      validate = false
+    }
+
+    if (validate) {
+      $form.addClass('confirm-sending')
+
+      setTimeout(function () {
+        $form
+          .removeClass('confirm-sending')
+          .addClass('confirm-success')
+      }, 3000)
+    }
+  },
+  'click .player-modal-footer-button--approved' (event, instance) { //
+    var $parent
+
+    $parent = $(instance.find('div.player-container'))
+    $parent
+      .removeClass('cover-screen log-screen buy-screen confirm-screen')
+      .addClass('play-video')
   }
+  // /front-end tests
 })
