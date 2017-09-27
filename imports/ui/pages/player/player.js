@@ -258,8 +258,8 @@ Template.player.events({
     // #front-end tests
     const $parent = $(instance.find('div.player-container'))
     if ($parent.hasClass('blocked')) {
-      $parent.addClass('log-screen');
-      return false;
+      $parent.addClass('log-screen')
+      return false
     }
     // /front-end tests
 
@@ -475,7 +475,7 @@ Template.player.events({
           .removeClass('confirm-sending')
           .addClass('confirm-success')
 
-        $parent.removeClass('blocked');
+        $parent.removeClass('blocked')
       }, 3000)
     }
   },

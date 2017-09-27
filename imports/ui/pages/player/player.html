@@ -51,8 +51,7 @@
     </div>
     <!-- /modal buy -->
 
-    <!-- <video id="video-player" class="player-video" {{canAutoplay}}> -->
-    <video id="video-player" class="player-video" poster="../img/cover/teaser1.jpg">
+    <video id="video-player" class="player-video" poster="../img/cover/teaser1.jpg" {{canAutoplay}}>
     </video>
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
@@ -96,14 +95,15 @@
       {{#each tag in tags }}
         <!-- <div class="primary-tag">{{ tag }}</div> -->
       {{/each}}
-      <!-- <div class="player-uploader">{{ uploader.name }} <img class="dapp-identicon" src="{{ uploader.avatar }}"/></div> -->
-        
-<!--         <div class="player-description">{{ description }}</div>
+      <!--
+        <div class="player-uploader">{{ uploader.name }} <img class="dapp-identicon" src="{{ uploader.avatar }}"/></div>
+        <div class="player-description">{{ description }}</div>
         <div class="player-statistics">
           <span class="statistic-text"><img src= "/img/view-icon.svg">{{formatNumber stats.views}}</span>
           <span class="statistic-text" id="button-like"><img src= "/img/like-icon.svg"/>{{formatNumber stats.likes}}</span>
           <span class="statistic-text" id="button-dislike"><img src= "/img/deslike-icon.svg"/>{{formatNumber stats.dislikes}}</span>
-        </div> -->
+        </div>
+      -->
         {{#if isLocked }}
           <!-- <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button> -->
         {{/if}}
