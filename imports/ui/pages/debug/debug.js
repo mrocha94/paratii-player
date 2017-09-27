@@ -1,17 +1,28 @@
 /* eslint-disable no-console */
-import { web3 } from '/imports/lib/ethereum/connection.js'
-import { getKeystore, deployTestContract, sendUnSignedContractTransaction } from '/imports/lib/ethereum/wallet.js'
+import { web3, updateSession } from '/imports/lib/ethereum/connection.js'
+import { setRegistryAddress, getContractAddress } from '/imports/lib/ethereum/contracts.js'
+import { getKeystore, sendUnSignedContractTransaction, sendUnSignedTransaction } from '/imports/lib/ethereum/wallet.js'
+import { deployParatiiContracts } from '/imports/lib/ethereum/helpers.js'
 import { Template } from 'meteor/templating'
 import { getUserPTIAddress } from '/imports/api/users.js'
 import './debug.html'
 
 Template.debug.events({
-  'click #deploy-parati-test-contract' () {
-    deployTestContract(web3.eth.accounts[0])
-    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
-  },
   'click #get-some-PTI' () {
-    sendUnSignedContractTransaction(web3.eth.accounts[0], 100)
+    sendUnSignedContractTransaction(web3.eth.accounts[0], 10)
+  },
+  'click #get-some-ETH' () {
+    sendUnSignedTransaction(web3.eth.accounts[0], 10)
+  },
+  'click #update-Session' () {
+    updateSession()
+  },
+  'click #deploy-contracts' () {
+    deployParatiiContracts().then(function (contracts) {
+      setRegistryAddress(contracts['ParatiiRegistry'].address)
+      Session.set('contracts', contracts)
+      updateSession()
+    })
   }
 })
 Template.debug.helpers({
@@ -32,8 +43,12 @@ Template.debug.helpers({
     return Session.get('privateKey')
   },
   contractAddress () {
-    return Session.get('pti_contract_address')
+    return getContractAddress('ParatiiToken')
   },
+  ParatiiRegistryAddress () {
+    return Session.get('ParatiiRegistry')
+  },
+
   isTestRPC () {
     return Session.get('isTestRPC')
   },
@@ -48,6 +63,9 @@ Template.debug.helpers({
   },
   ptiAddress () {
     return getUserPTIAddress()
+  },
+  contracts () {
+    Session.get('contracts')
   },
   eth_balance () {
     const balance = Session.get('eth_balance')

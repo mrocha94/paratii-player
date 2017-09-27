@@ -3,8 +3,9 @@ import lightwallet from 'eth-lightwallet/dist/lightwallet.js'
 import { Accounts } from 'meteor/accounts-base'
 import { add0x } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-import { web3, GAS_PRICE, GAS_LIMIT, getContractAddress, setContractAddress } from './connection.js'
-import { paratiiContract } from './paratiiContract.js'
+import { web3, GAS_PRICE, GAS_LIMIT } from './connection.js'
+import { getContract } from './contracts.js'
+import ParatiiToken from './contracts/ParatiiToken.json'
 
 // createKeystore will create a new keystore
 // save it in the session object and in local storage
@@ -121,9 +122,13 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
   const fromAddr = getUserPTIAddress()
   const nonce = web3.eth.getTransactionCount(fromAddr)
   const value = parseInt(web3.toWei(amount, 'ether'), 10)
+  if (!description) {
+    description = ''
+  }
 
   const keystore = getKeystore()
-  keystore.keyFromPassword(password, function (error, pwDerivedKey) {
+  keystore.keyFromPassword(password, async function (error, pwDerivedKey) {
+    let contract
     if (error) throw error
     // sign the transaction
     const txOptions = {
@@ -135,15 +140,23 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
     let rawTx
     switch (type) {
       case 'Eth':
-        txOptions.to = add0x(recipient)
+        // next lines for a simple value transaction
+        // txOptions.to = add0x(recipient)
+        // txOptions.value = web3.toHex(value)
+        // txOptions.currency = 'eth'
+        // rawTx = lightwallet.txutils.valueTx(txOptions)
+        // break
+        contract = await getContract('SendEther')
+        txOptions.to = contract.address
+        // txOptions.currency = 'pti'
         txOptions.value = web3.toHex(value)
-        txOptions.currency = 'eth'
-        rawTx = lightwallet.txutils.valueTx(txOptions)
+        rawTx = lightwallet.txutils.functionTx(contract.abi, 'transfer', [recipient, description], txOptions)
         break
       case 'PTI':
-        txOptions.to = getContractAddress()
-        txOptions.currency = 'pti'
-        rawTx = lightwallet.txutils.functionTx(paratiiContract.abi, 'transfer', [recipient, value], txOptions)
+        contract = await getContract('ParatiiToken')
+        txOptions.to = contract.address
+        txOptions.currency = 'pti' // ?????
+        rawTx = lightwallet.txutils.functionTx(ParatiiToken.abi, 'transfer', [recipient, value], txOptions)
         break
       default:
     }
@@ -152,20 +165,22 @@ function doTx (amount, recipient, password, type, description, extraInfo) {
       if (err) {
         throw err
       }
-      txOptions.from = fromAddr
-      txOptions.description = description
-      txOptions.value = value
-      txOptions.transactionHash = hash
-      Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
-      Meteor.call('addTXToCollection', txOptions)
+      // txOptions.from = fromAddr
+      // txOptions.description = description
+      // txOptions.value = value
+      // txOptions.transactionHash = hash
+      // Object.assign(txOptions, extraInfo) // If there are options they are merged in the transation object
+      // Meteor.call('addTXToCollection', txOptions)
     })
   })
 }
 
+// TODO: the "unsigned" transactions are used for debugging purposes only and should/could be moved to the helpers.js file
 function sendUnSignedTransaction (address, amount) {
   const toAddr = getUserPTIAddress()
-  console.log('send some eth')
+  console.log('send unsigned transaction ')
   web3.eth.sendTransaction({ from: add0x(address), to: add0x(toAddr), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 }, function (error, result) {
+    console.log('result...')
     if (error) {
       console.log(error)
     }
@@ -173,44 +188,12 @@ function sendUnSignedTransaction (address, amount) {
   })
 }
 
-function sendUnSignedContractTransaction (address, value) {
-  const contractAddress = getContractAddress()
+async function sendUnSignedContractTransaction (fromAddress, value) {
   const toAddr = getUserPTIAddress()
-  const contract = web3.eth.contract(paratiiContract.abi).at(contractAddress)
-  contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: address })
+  const contract = await getContract('ParatiiToken')
+  console.log(`Sending ${value} PTI from ${fromAddress} to ${toAddr} using contract ${contract}`)
+  let result = await contract.transfer(toAddr, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
+  return result
 }
 
-function getAccounts () {
-  return web3.eth.accounts
-}
-
-function deployTestContract (owner) {
-  const MyContract = web3.eth.contract(paratiiContract.abi)
-  MyContract.new(
-    {
-      from: add0x(owner),
-      data: paratiiContract.unlinked_binary,
-      gas: web3.toHex(GAS_LIMIT)
-    }, function (err, myContract) {
-    if (!err) {
-       // NOTE: The callback will fire twice!
-       // Once the contract has the transactionHash property set and once its deployed on an address.
-
-       // e.g. check tx hash on the first call (transaction send)
-      if (!myContract.address) {
-
-       // check address on the second call (contract deployed)
-      } else {
-        setContractAddress(myContract.address)
-        Meteor.call('resetFilter', {
-          contract: myContract.address
-        })
-      }
-
-       // Note that the returned "myContractReturned" === "myContract",
-       // so the returned "myContractReturned" object will also get the address set.
-    }
-  })
-}
-
-export { createKeystore, restoreWallet, doTx, getSeed, getAccounts, sendUnSignedTransaction, deployTestContract, sendUnSignedContractTransaction, saveKeystore }
+export { createKeystore, restoreWallet, doTx, getSeed, sendUnSignedTransaction, sendUnSignedContractTransaction, saveKeystore }

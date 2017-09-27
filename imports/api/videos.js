@@ -1,9 +1,8 @@
 import { check } from 'meteor/check'
-import { Transactions } from '/imports/api/transactions.js'
+// import { Transactions } from '/imports/api/transactions.js'
 import { Playlists } from '/imports/api/playlists.js'
 
 export const Videos = new Mongo.Collection('videos')
-
 export function userLikesVideo (userId, videoId) {
   return Boolean(
     Meteor.users.findOne({ _id: userId, 'stats.likes': { $in: [videoId] } })
@@ -44,12 +43,13 @@ if (Meteor.isServer) {
       if (video && video.price === 0) {
         return false // Video is free, it doesn't have a price
       } else {
-        const videoUnlocked = Transactions.findOne({ videoid: videoid, from: userAddress, blockNumber: {$ne: null} })
-        if (videoUnlocked) {
-          return false
-        }
+        // const videoUnlocked = Transactions.findOne({ videoid: videoid, from: userAddress, blockNumber: {$ne: null} })
+        // if (videoUnlocked) {
+        //   return false
+        // }
+        // TODO: look at the VideoContract to check if the video has been bought by the user
+        return true
       }
-      return true
     }
   })
 }
