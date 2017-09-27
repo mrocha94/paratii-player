@@ -214,6 +214,8 @@
     position: absolute;
     width: 100%;
 
+    // Buttons
+
     &-button {
       &:extend(.hover-opacity all);
 
@@ -247,9 +249,19 @@
 
       &--approved {
         display: none;
+        padding-left: 25px;
+        position: relative;
 
         .confirm-success & {
           display: block;
+        }
+
+        &-svg {
+          fill: @color-purple;
+          left: 0;
+          position: absolute;
+          top: -5px;
+          width: 25px;
         }
       }
     }
