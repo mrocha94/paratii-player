@@ -6,23 +6,17 @@
   display: table;
 }
 
-/**
- * Hide text while making it readable for screen readers
- * 1. Needed in WebKit-based browsers because of an implementation bug;
- *    See: https://code.google.com/p/chromium/issues/detail?id=457146
- */
+// Hide text while making it readable for screen readers. Needed in WebKit-based browsers because of an implementation bug. See https://code.google.com/p/chromium/issues/detail?id=457146
+
 .hide-text {
   overflow: hidden;
-  padding: 0; /* 1 */
+  padding: 0;
   text-indent: 101%;
   white-space: nowrap;
 }
 
-/**
- * Hide element while making it readable for screen readers
- * Shamelessly borrowed from HTML5Boilerplate:
- * https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
- */
+// Hide element while making it readable for screen readers. Shamelessly borrowed from HTML5Boilerplate: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
+
 .visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -34,20 +28,72 @@
   width: 1px;
 }
 
-// Mobile
+// Hovers
 
-.show-mobile {
-  display: none;
+.hover-opacity {
+  transition: opacity .3s;
 
-  @include screenphablet {
-    display: block;
+  &:hover {
+    opacity: .5;
   }
 }
 
-.hide-mobile {
-  display: block;
 
-  @include screenphablet {
-    display: none;
+// Position
+
+.pos-a-full {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+// Animations
+// Keyframes
+
+@keyframes shakeAnim {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translate3d(1px, 0, 0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    opacity: .75;
+  }
+
+  20%, 40%, 60%, 80% {
+    opacity: 1;
+  }
+}
+
+@keyframes dots {
+  0%, 100% {
+    content: ''
+  }
+
+  10%, 90% {
+    content: '.';
+  }
+
+  30%, 70% {
+    content: '..';
+  }
+
+  50% {
+    content: '...';
   }
 }
