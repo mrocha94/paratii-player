@@ -437,14 +437,14 @@ Template.player.events({
   },
   // #front-end tests
   'click #player-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
-    const videoPlayer = instance.find('#player-container')
-    if (fullscreenOn) {
-      requestCancelFullscreen(document)
-      fullscreenOn = false
-    } else {
-      requestFullscreen(videoPlayer)
-      fullscreenOn = true
-    }
+    // const videoPlayer = instance.find('#player-container')
+    // if (fullscreenOn) {
+    //   requestCancelFullscreen(document)
+    //   fullscreenOn = false
+    // } else {
+    //   requestFullscreen(videoPlayer)
+    //   fullscreenOn = true
+    // }
   },
   'click .player-modal-footer-button--cancel' (event, instance) { //
     var $parent
