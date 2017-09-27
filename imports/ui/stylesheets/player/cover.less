@@ -1,23 +1,26 @@
-// Start window
+// Cover window
 
-.player-start {
+.player-cover {
   &:extend(.pos-a-full all);
 
-  background: no-repeat 50% 50%; 
-  background-size: cover;
+  background-color: black;
   display: none;
-  z-index: @zindex-player-start;
+  z-index: @zindex-player-cover;
 
-  .query-tiny({
-    display: block;
-  });
+  .cover-screen & {
+    .query-tiny({
+      display: block;
+    });
+  }
 
   &-wrapper {
     &:extend(.player-tiny-modal-container all);
+
+    background: no-repeat 50% 50%; 
+    background-size: cover;
   }
 
   &-button-fullscreen {
-    &:extend(.hover-opacity all);
     &:extend(.player-tiny-button-fullscreen all);
 
     z-index: 7;
@@ -65,16 +68,16 @@
     z-index: 6;
 
     &:hover {
-      background-color: rgba(0, 0, 0, .5);
-      transition: background .4s linear .1s;
+      background-color: rgba(0, 0, 0, .6);
+      transition: background .25s linear .1s;
     }
 
     &-svg {
-      transition: transform .5s @ease-smooth;
+      transition: transform .35s @ease-smooth;
       width: 35px;
 
-      .player-start-button-play:hover & {
-        transform: scale(1.1);
+      .player-cover-button-play:hover & {
+        transform: scale(.9);
       }
     }
   }
