@@ -1,24 +1,6 @@
 <template name="player">
-  <div id="player-container" class="player-container cover-screen">
-   
-    <!-- #player cover --> 
-    <div class="player-cover">
-      <div class="player-cover-wrapper" style="background-image: url('../img/cover/teaser1.jpg');">
-        <button id="player-cover-button-fullscreen" class="player-cover-button-fullscreen">
-          <svg class="player-button-fullscreen-svg button-icon" viewBox="0 0 14 14">
-            <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
-          </svg>
-        </button>
-
-        <p class="player-cover-title">Around the Block - Chapter 6</p>
-        <span class="player-cover-price">10 us$</span>
-        <span class="player-cover-time">{{formatTime totalTime}}</span>
-        <button id="player-cover-button-play" class="player-cover-button-play">
-          <svg class="player-cover-button-play-svg" viewBox="0 0 11 14"><path d="M0 0v14l11-7" fill="#FFF" fill-rule="evenodd"/></svg>
-        </button>
-      </div>
-    </div>
-    <!-- #player cover -->
+  {{#with video}}
+  <div id="player-container" class="player-container blocked">
 
     <!-- #modal buy -->
     <div class="player-modal">
@@ -43,7 +25,7 @@
         <!-- /login -->
         <!-- #buy -->
         <div class="player-modal-content player-modal-content--buy">
-          <p class="player-modal-title">Around the Block - Chapter 6</p>
+          <p class="player-modal-title">{{ title }}</p>
           <p class="player-modal-text">You are going to transfer <strong>10 US$</strong> <span class="player-modal-pti">20 pti</span> to Around the Block for the video <strong>Around the Block - Chapter 6</strong>.</p>
           <div class="player-modal-footer">
             <button class="player-modal-footer-button player-modal-footer-button--cancel" type="button">Cancel</button>
@@ -53,7 +35,7 @@
         <!-- /buy -->
         <!-- #confirm -->
         <form class="player-modal-content player-modal-content--confirm" action="">
-          <p class="player-modal-title">Around the Block - Chapter 6</p>
+          <p class="player-modal-title">{{ title }}</p>
           <p class="player-modal-text"><strong>10 US$</strong> <span class="player-modal-pti">20 pti</span></p>
           <input class="player-modal-input confirm-password" autocomplete="off" type="password" placeholder="password" />
           <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
@@ -65,26 +47,31 @@
           </div>
         </form>
         <!-- /confirm -->
-
       </div>
     </div>
     <!-- /modal buy -->
 
     <!-- <video id="video-player" class="player-video" {{canAutoplay}}> -->
-    <video id="video-player" class="player-video">
+    <video id="video-player" class="player-video" poster="../img/cover/teaser1.jpg">
     </video>
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">
-
-      <div id="video-progress">
-        <div id="loaded-bar" style="width: {{loadedProgress}}%"></div>
-        <div id="played-bar" style="width: {{playedProgress}}%"></div>
-        <div id="scrubber" style="left: {{scrubberTranslate}}%"></div>
+      <div id="video-progress" class="player-controls-progress">
+        <div id="loaded-bar" class="player-controls-progress-loaded" style="width: {{loadedProgress}}%"></div>
+        <div id="played-bar" class="player-controls-progress-played" style="width: {{playedProgress}}%"></div>
+        <div id="scrubber" class="player-controls-progress-scrubber" style="left: {{scrubberTranslate}}%"></div>
       </div>
       <br />
-      <button id="play-pause-button" class="player-button-play" title="{{playPause}}">
-        <img class="button-icon" src= "{{playPauseIcon}}">
+      <button id="play-pause-button" class="player-button-play" title="{{playPause}}">  
+        <svg class="player-button-play-svg" viewBox="0 0 11 14"><path d="M0 0v14l11-7" fill="#FFF" fill-rule="evenodd"/></svg>
       </button>
+      <span id="total-time" class="player-controls-time-total">{{formatTime totalTime}}</span>
+      <button id="player-button-fullscreen" class="player-button-fullscreen">
+        <svg class="player-button-fullscreen-svg button-icon" viewBox="0 0 14 14">
+          <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
+        </svg>
+      </button>
+
       <!-- <button id="volume-button" title="volume">
         <img class="button-icon" src={{ volumeIcon }} />
       </button>
@@ -94,20 +81,18 @@
       </div> -->
       <!-- <span id="current-time" class="video-time-current">{{formatTime currentTime}}</span>
       <span class="slash video-time-slash">/</span> -->
-      <span id="total-time" class="video-time-total">{{formatTime totalTime}}</span>
+      
       {{ #if status }}<!-- <span id="status"><tt>STATUS: {{ status }}</tt></span> -->{{/if}}
       
-      <button id="fullscreen-button" class="player-button-fullscreen" title="{{fullscreen}}">
-          <svg class="player-button-fullscreen-svg" viewBox="0 0 14 14">
-            <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
-          </svg>
-      </button>
+
     </div>
     {{/unless }}
 
-    {{#with video}}
+    
     <div class="player-info {{playPause}}">
-      <h2 class="player-title player-modal-title">{{ title }}</h2>
+      <h2 class="visually-hidden">{{ title }}</h2>
+      <p class="player-title">{{ title }}</p>
+      <span class="player-info-price">10 us$</span>
       {{#each tag in tags }}
         <!-- <div class="primary-tag">{{ tag }}</div> -->
       {{/each}}
@@ -123,6 +108,6 @@
           <!-- <button id="unlock-video" class="player-price" data-title="{{ title }}" data-address="{{ uploader.address }}" data-price="{{ formatNumber price }}">UNLOCK THIS VIDEO WITH {{formatNumber price}} PTI</button> -->
         {{/if}}
     </div>
-    {{/with}}
   </div>
+  {{/with}}
 </template>

@@ -255,6 +255,14 @@ Template.player.events({
     navState.set('minimized')
   },
   'click #play-pause-button' (event, instance) {
+    // #front-end tests
+    const $parent = $(instance.find('div.player-container'))
+    if ($parent.hasClass('blocked')) {
+      $parent.addClass('log-screen');
+      return false;
+    }
+    // /front-end tests
+
     const dict = instance.playerState
     const navState = instance.navState
     const videoPlayer = instance.find('#video-player')
@@ -382,7 +390,7 @@ Template.player.events({
     Meteor.call('videos.dislike', videoId)
   },
   // #front-end tests
-  'click #player-cover-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
+  'click #player-button-fullscreen, click #player-modal-button-fullscreen' (event, instance) {
     const videoPlayer = instance.find('#player-container')
     if (fullscreenOn) {
       requestCancelFullscreen(document)
@@ -396,9 +404,7 @@ Template.player.events({
     var $parent
 
     $parent = $(instance.find('div.player-container'))
-    $parent
-      .removeClass('log-screen buy-screen confirm-screen')
-      .addClass('cover-screen')
+    $parent.removeClass('log-screen buy-screen confirm-screen')
   },
   'click #player-cover-button-play' (event, instance) { //
     var $parent
@@ -446,8 +452,9 @@ Template.player.events({
   'submit .player-modal-content--confirm' (event, instance) {
     event.preventDefault()
 
-    var $form, $password, validate
+    var $parent, $form, $password, validate
 
+    $parent = $(instance.find('div.player-container'))
     $form = $('.player-modal-content--confirm')
     $password = $form.find('.confirm-password')
     validate = true
@@ -467,6 +474,8 @@ Template.player.events({
         $form
           .removeClass('confirm-sending')
           .addClass('confirm-success')
+
+        $parent.removeClass('blocked');
       }, 3000)
     }
   },
@@ -475,7 +484,7 @@ Template.player.events({
 
     $parent = $(instance.find('div.player-container'))
     $parent
-      .removeClass('cover-screen log-screen buy-screen confirm-screen')
+      .removeClass('log-screen buy-screen confirm-screen')
       .addClass('play-video')
   }
   // /front-end tests
