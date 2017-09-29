@@ -170,12 +170,6 @@
       border-color: @color-green;
     }
 
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus,
-    &:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px white inset;
-    }
-
     &,
     &::placeholder,
     &:-webkit-autofill:hover,
@@ -183,6 +177,8 @@
     &:-webkit-autofill {
       color: @color-grey-light;
       font-weight: 500;
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+      -webkit-text-fill-color: @color-grey-light;
     }
 
     &.password {

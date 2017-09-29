@@ -1,16 +1,28 @@
 // Player Container
 
 .player-container {
+  background: black;
   height: 100%;
+  margin-left: 60px;
   overflow: hidden;
   position: relative;
-  width: 100%;
+  width: ~"calc(100% - 60px)";
+
+  .playing & {
+    margin: 0;
+    width: 100%;
+  }
+
+  .query-tiny({
+    margin: 0;
+    width: 100%;
+  });
 }
 // #player-container {
 //   position: absolute;
 //   top: 0px;
 //   left: -60px;
-//   width: ~"calc(100% + 60px)";
+//   width: ~"calc(100% - 60px)";
 //   height: 100%;
 //   background-color: black;
 

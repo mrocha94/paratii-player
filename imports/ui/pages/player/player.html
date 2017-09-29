@@ -1,6 +1,6 @@
 <template name="player">
   {{#with video}}
-  <div id="player-container" class="player-container blocked">
+  <div id="player-container" class="player-container"> <!-- set class `.blocked` to disable player withou login -->
     <!-- #modal buy -->
     <div class="player-modal">
       <div class="player-modal-wrapper">
@@ -12,7 +12,7 @@
 
         <!-- #login -->
         <form class="player-modal-content player-modal-content--log" action="">
-          <input class="player-modal-input email" autocomplete="off" type="email" placeholder="email" required />
+          <input class="player-modal-input email" autocomplete="off" type="email" placeholder="email" />
           <input class="player-modal-input password" autocomplete="off" type="password" placeholder="password" />
           <p class="player-modal-text-small"><a class="player-modal-link-forgot" href="#" target="_blank">Forgot password?</a></p>
           <div class="player-modal-footer">
@@ -70,12 +70,12 @@
       <button id="play-pause-button" class="player-button-play" title="{{playPause}}">  
         <svg class="player-button-play-svg" viewBox="0 0 11 14"><path d="M0 0v14l11-7" fill="#FFF" fill-rule="evenodd"/></svg>
       </button>
-      <span id="total-time" class="player-controls-time-total">{{formatTime totalTime}}</span>
       <button id="player-button-fullscreen" class="player-button-fullscreen">
         <svg class="player-button-fullscreen-svg button-icon" viewBox="0 0 14 14">
           <path d="M2 9H0v5h5v-2H2V9zM0 5h2V2h3V0H0v5zm12 7H9v2h5V9h-2v3zM9 0v2h3v3h2V0H9z" fill-rule="evenodd"/>
         </svg>
       </button>
+      <span id="total-time" class="player-controls-time-total">{{formatTime totalTime}}</span>
       <!-- 
 
       {{#if hasPlaylistId}}

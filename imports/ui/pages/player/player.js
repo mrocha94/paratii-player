@@ -460,23 +460,22 @@ Template.player.events({
   'submit .player-modal-content--log' (event, instance) {
     event.preventDefault()
 
-    var $parent, $form, $email, $password, validate
+    var $parent, $form, $email, $password, regex, validate
 
     $parent = $(instance.find('div.player-container'))
     $form = $('.player-modal-content--log')
     $email = $form.find('.email')
     $password = $form.find('.password')
+    regex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     validate = true
 
     $email.removeClass('error sucess')
     $password.removeClass('error sucess')
 
-    if ($email.val().length < 5) {
+    if (!regex.test($email.val())) {
       $email.removeClass('success error').addClass('error')
       validate = false
-    }
-
-    if ($password.val().length < 5) {
+    } else if ($password.val().length < 5) {
       $password.removeClass('success error').addClass('error')
       validate = false
     }

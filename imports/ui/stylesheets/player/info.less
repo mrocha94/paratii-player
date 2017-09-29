@@ -1,6 +1,7 @@
 // Player Info
 
 .player-info {
+  padding: 20px;
   position: relative;
   z-index: @zindex-player-info;
 
@@ -14,12 +15,15 @@
 
   &::before,
   &::after {
-    content: '';
     height: 40%;
     left: 0;
     position: absolute;
     width: 100%;
     z-index: 1;
+
+    .query-tiny({
+      content: '';
+    });
   }
 
   &::before {

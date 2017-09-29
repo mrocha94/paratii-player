@@ -9,9 +9,10 @@
 //
 
 .player-controls {
+  bottom: 0px;
   position: absolute;
   left: 0;
-  bottom: 0px;
+  padding: 20px;
   width: 100%;
   z-index: @zindex-player-controls;
 
@@ -95,12 +96,15 @@
   &-time {
     &-total {    
       color: white;
-      position: absolute;
+      float: right;
+      margin: 0 10px 0 0;
       user-select: none;
       z-index: @zindex-player-controls-time;
 
       .query-tiny({
         bottom: 9px;
+        margin: 0;
+        position: absolute;
         right: 20px;
       });
 
@@ -224,6 +228,8 @@
   //   }
   // }
 }
+
+
 // Buttons
 
 .player-button {
@@ -241,7 +247,11 @@
 
     &-svg {
       transition: transform .35s @ease-smooth;
-      width: 35px;
+      width: 20px;
+
+      .query-tiny({
+        width: 35px;
+      });
 
       .player-button-play:hover & {
         transform: scale(.9);
@@ -254,7 +264,10 @@
   &-fullscreen {
     &:extend(.player-button-fullscreen-tiny all);
 
+    float: right;
+
     .query-tiny({
+      float: none;
       z-index: @zindex-player-controls-button-fullscreen;
     });
 
