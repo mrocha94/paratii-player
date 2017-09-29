@@ -466,13 +466,15 @@ Template.player.events({
     $form = $('.player-modal-content--log')
     $email = $form.find('.email')
     $password = $form.find('.password')
-    regex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    // regex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+    regex = 5
     validate = true
 
     $email.removeClass('error sucess')
     $password.removeClass('error sucess')
 
-    if (!regex.test($email.val())) {
+    // if (!regex.test($email.val())) {
+    if ($password.val().length < regex) {
       $email.removeClass('success error').addClass('error')
       validate = false
     } else if ($password.val().length < 5) {
