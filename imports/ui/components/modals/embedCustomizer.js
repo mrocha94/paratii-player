@@ -21,10 +21,12 @@ const embedSizes = [
 
 Template.embedCustomizer.onCreated(function () {
   this.iframe = new ReactiveDict()
+  // default size
   this.iframe.set('size', embedSizes[0])
   this.iframe.set('allowfullscreen', false)
   this.iframe.set('autoplay', false)
   this.iframe.set('loop', false)
+  this.iframe.set('playsinline', false)
 
   clipboard = new Clipboard('#copy_to_clipboard')
   clipboard.on('success', function (e) {
@@ -56,20 +58,23 @@ Template.embedCustomizer.helpers({
     if (Template.instance().iframe.get('loop')) {
       parameters.loop = 1
     }
-    if (Template.instance().iframe.get('playinline')) {
-      parameters.playinline = 1
+    if (Template.instance().iframe.get('playsinline')) {
+      parameters.playsinline = 1
     }
 
     if (Template.instance().iframe.get('allowfullscreen')) {
       iframe.setAttribute('webkitallowfullscreen', true)
       iframe.setAttribute('mozallowfullscreen', true)
       iframe.setAttribute('allowfullscreen', true)
+      parameters.fullscreen = 1
     }
-
+    parameters.type = Template.instance().iframe.get('size').type
     const src = buildUrl(Meteor.absoluteUrl.defaultOptions.rootUrl.replace(/\/$/, '') + '/embed/' + this.videoId, parameters)
     iframe.src = 'srcplaceholder'
+
     iframe.width = Template.instance().iframe.get('size').width
     iframe.height = Template.instance().iframe.get('size').height
+    iframe.setAttribute('frameborder', 0)
     var iframeHtml = '' + iframe.outerHTML
     console.log(iframeHtml)
     iframeHtml = iframeHtml.replace('srcplaceholder', src)
@@ -95,8 +100,8 @@ Template.embedCustomizer.events({
   'change .loop' (event) {
     Template.instance().iframe.set('loop', event.target.checked)
   },
-  'change .playinline' (event) {
-    Template.instance().iframe.set('playinline', event.target.checked)
+  'change .playsinline' (event) {
+    Template.instance().iframe.set('playsinline', event.target.checked)
   }
 })
 

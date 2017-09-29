@@ -4,12 +4,12 @@ import { sprintf } from 'meteor/sgi:sprintfjs'
 
 import { formatNumber } from '/imports/lib/utils.js'
 import { getUserPTIAddress } from '/imports/api/users.js'
-// import { UserTransactions } from '/imports/api/transactions.js'
 import { Playlists } from '../../../../imports/api/playlists.js'
 import { Videos } from '../../../api/videos.js'
 import { createWebtorrentPlayer } from './webtorrent.js'
 import { createIPFSPlayer } from './ipfs.js'
 import '/imports/ui/components/modals/embedCustomizer.js'
+import '/imports/ui/components/modals/unlockVideo.js'
 
 import './player.html'
 
@@ -61,6 +61,12 @@ Template.player.onCreated(function () {
   const instance = Template.instance()
   const bodyView = Blaze.getView('Template.App_body')
 
+  // embed/extra parameters
+  const autoplay = parseInt(FlowRouter.getQueryParam('autoplay'))
+  const loop = parseInt(FlowRouter.getQueryParam('loop'))
+  const playsinline = parseInt(FlowRouter.getQueryParam('playsinline'))
+  const fullscreen = parseInt(FlowRouter.getQueryParam('fullscreen'))
+
   this.currentVideo = new ReactiveVar()
 
   // this makes the tests work
@@ -80,6 +86,19 @@ Template.player.onCreated(function () {
   this.playerState.set('volScrubberTranslate', 100)
   this.playerState.set('muted', false)
   this.playerState.set('locked', true)
+  /* EMBED CONTROLS */
+  this.playerState.set('autoplay', autoplay === 1)
+  this.playerState.set('loop', loop === 1)
+  this.playerState.set('playsinline', playsinline === 1)
+
+  /* DETERMINED IF PLAYER IS EMBEDED */
+  if (window.top !== window.self) {
+    console.log('embedded')
+    this.playerState.set('fullscreen', fullscreen === 1)
+  } else {
+    console.log('not embedded')
+    this.playerState.set('fullscreen', true)
+  }
 
   if (userPTIAddress) {
     Meteor.subscribe('userTransactions', userPTIAddress)
@@ -183,6 +202,19 @@ Template.player.helpers({
   },
   hasPlaylistId () {
     return FlowRouter.getQueryParam('playlist') != null
+  },
+  autoplay () {
+    /* TODO: NEED TO CHECK IF IS IT BOUGHT */
+    return Template.instance().playerState.get('autoplay') === true ? 'autoplay' : ''
+  },
+  loop () {
+    return Template.instance().playerState.get('loop') === true ? 'loop' : ''
+  },
+  playsinline () {
+    return Template.instance().playerState.get('playsinline') === true ? 'playsinline' : ''
+  },
+  fullscreen () {
+    return Template.instance().playerState.get('fullscreen')
   }
 })
 
@@ -250,7 +282,7 @@ const setLoadedProgress = (instance) => {
 
 Template.player.events({
   'click #unlock-video' (event) {
-    Modal.show('doTransaction', {
+    Modal.show('unlockVideo', {
       type: 'PTI',
       label: 'Unlock this video',
       action: 'unlock_video',
@@ -539,7 +571,8 @@ Template.player.events({
     const videoId = _video._id
     Modal.show('embedCustomizer', {
       videoId: videoId,
-      label: 'Embed code'
+      label: 'Embed code',
+      embed: window.top !== window.self
     })
   }
 })

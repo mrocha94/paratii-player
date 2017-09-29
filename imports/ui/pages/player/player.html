@@ -56,7 +56,9 @@
     </div>
     <!-- /modal buy -->
 
-    <video id="video-player" class="player-video" poster="../img/cover/teaser1.jpg" autoplay="true"></video>
+    <!-- <video id="video-player" class="player-video" poster="../img/cover/teaser1.jpg" autoplay="true"></video> -->
+    <video id="video-player"  class="player-video" {{autoplay}} {{loop}} {{playsinline}}>
+    </video>
 
     {{#unless isLocked }}
     <div class="player-controls {{playPause}} {{hideControls}}">

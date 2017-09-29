@@ -1,3 +1,8 @@
+/*
+ * These are helpers for the end-to-end tests in /tests
+ * (they would be beter places in /tests/helpers.js, but we are using these in the debug.js screen)
+ */
+
 import { add0x } from '../utils.js'
 import { web3 } from './web3.js'
 import ParatiiAvatarSpec from './contracts/ParatiiAvatar.json'
@@ -6,17 +11,17 @@ import ParatiiTokenSpec from './contracts/ParatiiToken.json'
 import SendEtherSpec from './contracts/SendEther.json'
 import VideoRegistrySpec from './contracts/VideoRegistry.json'
 import VideoStoreSpec from './contracts/VideoStore.json'
+import { getContract } from './contracts.js'
 
 var promisify = require('promisify-node')
 
 function _deploy (contractSpec, cb) {
-  console.log(`deploying contract ${contractSpec.contractName}`)
+  console.log(`deploying contract ${contractSpec.contractName || contractSpec.contract_name}`)
   let owner = web3.eth.accounts[0]
   let contract = web3.eth.contract(contractSpec.abi)
   let contractInstance = contract.new({
     from: add0x(owner),
-    // data: contractSpec.unlinked_binary,
-    data: contractSpec.bytecode,
+    data: contractSpec.bytecode || contractSpec.unlinked_binary,
     gas: web3.toHex(4e6)
   },
   function (err, myContract) {
@@ -32,15 +37,16 @@ function _deploy (contractSpec, cb) {
     } else {
       cb(err, null)
     }
-  })
+  }
+  )
   return contractInstance
 }
+
 function deploy (contractSpec) {
   return promisify(_deploy)(contractSpec)
 }
 
 export async function deployParatiiContracts () {
-  console.log(await web3.eth.getBalance(web3.eth.accounts[0]))
   let paratiiAvatar = await deploy(ParatiiAvatarSpec)
   let paratiiToken = await deploy(ParatiiTokenSpec)
   let paratiiRegistry = await deploy(ParatiiRegistrySpec)
@@ -63,4 +69,25 @@ export async function deployParatiiContracts () {
     VideoStore: videoStore
   }
   return result
+}
+
+export async function sendSomeETH (beneficiary, amount) {
+  let fromAddress = web3.eth.accounts[0]
+  console.log(`Sending ${amount} ETH from ${fromAddress} to ${beneficiary} `)
+  let result = await web3.eth.sendTransaction({ from: add0x(fromAddress), to: add0x(beneficiary), value: web3.toWei(amount, 'ether'), gas: 21000, gasPrice: 20000000000 })
+  return result
+}
+
+export async function sendSomePTI (beneficiary, amount) {
+  const contract = await getContract('ParatiiToken')
+  let fromAddress = web3.eth.accounts[0]
+  let value = amount
+  console.log(`Sending ${value} PTI from ${fromAddress} to ${beneficiary} using contract ${contract}`)
+  let result = await contract.transfer(beneficiary, web3.toWei(value, 'ether'), { gas: 200000, from: fromAddress })
+  console.log(result)
+  return result
+}
+
+export async function getBalance (address) {
+  return web3.eth.getBalance(address)
 }
