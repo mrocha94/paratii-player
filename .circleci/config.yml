@@ -32,7 +32,7 @@ jobs:
           command: sleep 10
       - run:
           command: TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
-        no_output_timeout: 1020s
+          no_output_timeout: 1020s
       - run:
           command: npm run dev:
         background: true
