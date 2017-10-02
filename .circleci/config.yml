@@ -3,10 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:7.10.0
-    machine:
-      node:
-        version: 7.10.0
-
+    steps:
+      - checkout
     dependencies:
       override:
         # - if [ ! -f ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
