@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:7.10.0
+    machine:
+      node:
+        version: 7.10.0
+
+    dependencies:
+      override:
+        # - if [ ! -f ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
+        - curl https://install.meteor.com | /bin/sh
+        # - touch ~/.meteor/packages/meteor-tool/1\.4\.3_1
+        - npm install
+        # if any project packages were updated, this will download and install them
+        - meteor list
+      cache_directories:
+        - "~/.meteor"
+        # - "~/paratii-player/node_modules"
+    test:
+      pre:
+        - google-chrome --version
+        - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+        - sudo apt-get update
+        - sudo apt-get --only-upgrade install google-chrome-stable
+        - google-chrome --version
+      override:
+        - sleep 10
+        - TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
+            timeout: 1020
+        - npm run dev:
+            background: true
+        - sleep 60
+        - npm run chimp-test
+        - npm run lint
+      post:
+        - pkill -f meteor
+
+    deployment:
+      staging:
+        branch: master
+        commands:
+          - ./deploy.sh:
+
+    notify:
+      webhooks:
+        # A list of hook hashes, containing the url field
+        # gitter hook
+        - url: https://webhooks.gitter.im/e/9facb9efda66adc53234
