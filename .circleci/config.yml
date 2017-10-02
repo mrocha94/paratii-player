@@ -5,48 +5,48 @@ jobs:
       - image: circleci/node:7.10.0
     steps:
       - checkout
-      run:
-        name: install meteor
-        command: curl https://install.meteor.com | /bin/sh
-      run:
-        command: npm install
-      run:
-        command: meteor list
-      run:
-        command: google-chrome --version
-      run:
-        command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-      run:
-        command: sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-      run:
-        command: sudo apt-get update
-      run:
-        command: sudo apt-get --only-upgrade install google-chrome-stable
-      run:
-        command: google-chrome --version
+      - run:
+          name: install meteor
+          command: curl https://install.meteor.com | /bin/sh
+      - run:
+          command: npm install
+      - run:
+          command: meteor list
+      - run:
+          command: google-chrome --version
+      - run:
+          command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+      - run:
+          command: sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+      - run:
+          command: sudo apt-get update
+      - run:
+          command: sudo apt-get --only-upgrade install google-chrome-stable
+      - run:
+          command: google-chrome --version
   test:
     docker:
       - image: circleci/node:7.10.0
     steps:
-      run:
-        command: sleep 10
-      run:
-        command: TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
+      - run:
+          command: sleep 10
+      - run:
+          command: TEST_BROWSER_DRIVER=nightmare NODE_OPTIONS='--harmony' meteor test --settings settings-dev.json --once --driver-package dispatch:mocha  --port 9999:
         no_output_timeout: 1020s
-      run:
-        command: npm run dev:
+      - run:
+          command: npm run dev:
         background: true
-      run:
-        command: npm run chimp-test
-      run:
-        command: npm run lint
+      - run:
+            command: npm run chimp-test
+      - run:
+          command: npm run lint
 
   deploy:
     docker:
       - image: circleci/node:7.10.0
     steps:
-      run:
-        command: ./deploy.sh:
+      - run:
+          command: ./deploy.sh:
 
 workflows:
   version: 1
