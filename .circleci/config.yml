@@ -5,7 +5,6 @@ jobs:
       - image: circleci/node:7.10.0
     steps:
       - checkout
-      # - if [ ! -f ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
       run:
         name: install meteor
         command: curl https://install.meteor.com | /bin/sh
@@ -13,9 +12,6 @@ jobs:
         command: npm install
       run:
         command: meteor list
-      # cache_directories:
-      # - "~/.meteor"
-      # - "~/paratii-player/node_modules"
       run:
         command: google-chrome --version
       run:
@@ -66,8 +62,8 @@ workflows:
           filters:
             branches:
               only: master
-    # notify:
-    #   webhooks:
-    #     # A list of hook hashes, containing the url field
-    #     # gitter hook
-    #     - url: https://webhooks.gitter.im/e/9facb9efda66adc53234
+# notify:
+#   webhooks:
+#     # A list of hook hashes, containing the url field
+#     # gitter hook
+#     - url: https://webhooks.gitter.im/e/9facb9efda66adc53234
