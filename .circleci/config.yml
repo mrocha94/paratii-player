@@ -46,7 +46,7 @@ jobs:
       - image: circleci/node:7.10.0
     steps:
       - run:
-          command: ./deploy.sh:
+          command: ./deploy.sh
 
 workflows:
   version: 1
